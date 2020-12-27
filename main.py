@@ -34,19 +34,24 @@ def get_commands_keyboard():
 def start_message(message):
     bot.send_message(message.chat.id, "Хеллоу хуман", reply_markup=get_commands_keyboard())
 
-# хелп страница
+# декоратор для команды /help
 @bot.message_handler(commands=['help'])
 def command_help(m):
+    # заменяем message.chat.id на cid
     cid = m.chat.id
+    # первая строка для помощи
     help_text = 'Доступны следующие команды \n'
+    # перебираем список команд
     for key in commands:
         help_text += '/' + key + ': '
         help_text += commands[key] + '\n'
+    # отправляем команды
     bot.send_message(cid, help_text, reply_markup=get_commands_keyboard())
-
+    # добавляем описание кода
     help_text = ('Описание кнопок: \nКнопка "привет" выводит текст "привет человек",'
                  'а кнопка "пока" выводит текст "пока человек"\n')
     bot.send_message(cid, help_text, reply_markup=get_commands_keyboard())
+    # указываем ссылку на профиль
     guide_url = "@fuccbwoi"
     help_text = 'Более подробную инструкцию и помощь вы сможеет узнать  написав мне: {}'.format(guide_url)
     bot.send_message(cid, help_text, reply_markup=get_commands_keyboard())
