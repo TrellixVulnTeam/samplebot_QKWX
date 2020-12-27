@@ -22,9 +22,9 @@ commands = {
 # создаем клавиатуру
 def get_commands_keyboard():
     command_select = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True, one_time_keyboard=False)
-    command_select.row('start')
+    command_select.row('/start')
     command_select.row('Привет', 'Пока')
-    command_select.row('help')
+    command_select.row('/help')
 
     return command_select
 
@@ -33,16 +33,6 @@ def get_commands_keyboard():
 @bot.message_handler(commands=['start'])
 def start_message(message):
     bot.send_message(message.chat.id, "Хеллоу хуман", reply_markup=get_commands_keyboard())
-
-
-# декоратор для текста
-@bot.message_handler(content_types=['text'])
-def send_text(message):
-    if message.text.lower() == 'привет':
-        bot.send_message(message.chat.id, "Привет человек")
-    elif message.text.lower() == 'пока':
-        bot.send_message(message.chat.id, "Пока человек")
-
 
 # хелп страница
 @bot.message_handler(commands=['help'])
@@ -61,6 +51,14 @@ def command_help(m):
     help_text = 'Более подробную инструкцию и помощь вы сможеет узнать  написав мне: {}'.format(guide_url)
     bot.send_message(cid, help_text, reply_markup=get_commands_keyboard())
 
+
+# декоратор для текста
+@bot.message_handler(content_types=['text'])
+def send_text(message):
+    if message.text.lower() == 'привет':
+        bot.send_message(message.chat.id, "Привет человек")
+    elif message.text.lower() == 'пока':
+        bot.send_message(message.chat.id, "Пока человек")
 
 # для работы нон стоп
 bot.polling(none_stop=True)
