@@ -2,12 +2,6 @@
 import telebot
 from telebot import types
 
-# создаем клавиатуру
-# keyboard = telebot.types.ReplyKeyboardMarkup(True)
-
-# добавляем кнопки на клавиатуру
-# keyboard.row('Привет', 'Пока')
-
 # указываем токен бота
 bot = telebot.TeleBot("1492450911:AAGpYNKiCQc0T5WXFQmdB2nhTqarF-zMJB4")
 
