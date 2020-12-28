@@ -77,6 +77,11 @@ def get_temperature(message):
 def get_humidity(message):
     bot.send_message(message.chat.id, f"Влажность: {view.humidity}")
 
+# декоратор для получения атмосферного давления
+@bot.message_handler(commands=['pressure'])
+def get_pressure(message):
+    bot.send_message(message.chat.id, "Атмосферное давление: {} мм рт. ст.".format(int(view.pressure.get("press"))))
+
 
 # для работы нон стоп
 bot.polling(none_stop=True)
