@@ -1,9 +1,21 @@
 # импортируем библиотеку telebot
 import telebot
+from pyowm import OWM
 from telebot import types
 
+# указываем город
+city = 'Antarctica'
+standart_city = 'Antarctica'
 # указываем токен бота
 bot = telebot.TeleBot("1492450911:AAGpYNKiCQc0T5WXFQmdB2nhTqarF-zMJB4")
+# указываем токен с OWM
+owm = OWM('1f538e669ad80922525da0924ecd2375')
+# менеджер для работы
+manager = owm.weather_manager()
+# наблюдение за городом
+observation = manager.weather_at_place(city)
+# смотрим
+view = observation.weather
 
 # описание команд использующееся в команде /help
 commands = {
@@ -11,7 +23,6 @@ commands = {
     'привет': 'ответ бота на данное сообщение',
     'пока': 'ответ бота на данное сообщение'
 }
-
 
 # создаем клавиатуру
 def get_commands_keyboard():
