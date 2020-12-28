@@ -27,9 +27,9 @@ commands = {
 # создаем клавиатуру
 def get_commands_keyboard():
     command_select = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True, one_time_keyboard=False)
-    command_select.row('Город', 'Погода')
-    command_select.row('Температура', 'Влажность')
-    command_select.row('Давление')
+    command_select.row('/get_city', '/weather')
+    command_select.row('/temp', '/humidity')
+    command_select.row('/pressure')
 
     return command_select
 
@@ -75,12 +75,27 @@ def get_temperature(message):
 # декоратор для получения влажности
 @bot.message_handler(commands=['humidity'])
 def get_humidity(message):
-    bot.send_message(message.chat.id, f"Влажность: {view.humidity}")
+    bot.send_message(message.chat.id, f"Влажность: {view.humidity}%")
 
 # декоратор для получения атмосферного давления
 @bot.message_handler(commands=['pressure'])
 def get_pressure(message):
     bot.send_message(message.chat.id, "Атмосферное давление: {} мм рт. ст.".format(int(view.pressure.get("press"))))
+
+# декоратор для получения полного списка характеристик погоды
+@bot.message_handler(commands=['weather'])
+def get_weather(message):
+    bot.send_message(message.chat.id,
+                     f"""Полные сведения о погоде:
+Город: {city}
+Температура: {view.temperature('celsius').get("temp")}°C
+Минимальная температура: {view.temperature('celsius').get("temp_min")}°C
+Максимальная температура: {view.temperature('celsius').get("temp_max")}°C
+Атмосферное давление: {int(view.pressure.get("press"))} мм рт. ст.
+Влажность: {view.humidity}%
+Облачность: {view.clouds}%
+Ветер м/с: {view.wind}
+""")
 
 
 # для работы нон стоп
