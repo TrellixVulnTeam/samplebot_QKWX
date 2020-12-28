@@ -27,9 +27,9 @@ commands = {
 # создаем клавиатуру
 def get_commands_keyboard():
     command_select = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True, one_time_keyboard=False)
-    command_select.row('/start')
-    command_select.row('Привет', 'Пока')
-    command_select.row('/help')
+    command_select.row('Город', 'Погода')
+    command_select.row('Температура', 'Влажность')
+    command_select.row('Давление')
 
     return command_select
 
@@ -61,14 +61,22 @@ def command_help(m):
     help_text = 'Более подробную инструкцию и помощь вы сможеет узнать  написав мне: {}'.format(guide_url)
     bot.send_message(cid, help_text, reply_markup=get_commands_keyboard())
 
+# декоратор для получения текущего города
+@bot.message_handler(commands=["get_city"])
+def get_city(message):
+    bot.send_message(message.chat.id, f"Текущий город: {city}")
 
-# декоратор для текста
-@bot.message_handler(content_types=['text'])
-def send_text(message):
-    if message.text.lower() == 'привет':
-        bot.send_message(message.chat.id, "Привет человек")
-    elif message.text.lower() == 'пока':
-        bot.send_message(message.chat.id, "Пока человек")
+# декоратор для получения температуры
+@bot.message_handler(commands=['temp'])
+def get_temperature(message):
+    bot.send_message(message.chat.id, f"""Температура: {view.temperature('celsius').get('temp')}°C
+Ощущается как: {view.temperature('celsius').get('feels_like')}°C""")
+
+# декоратор для получения влажности
+@bot.message_handler(commands=['humidity'])
+def get_humidity(message):
+    bot.send_message(message.chat.id, f"Влажность: {view.humidity}")
+
 
 # для работы нон стоп
 bot.polling(none_stop=True)
